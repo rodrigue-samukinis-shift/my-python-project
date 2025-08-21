@@ -22,6 +22,8 @@ jobs:
 
       - name: Install Snyk and scan
         run: |
-          pip install snyk
+          curl https://static.snyk.io/cli/latest/snyk-linux -o snyk
+          chmod +x ./snyk
+          mv ./snyk /usr/local/bin/
           snyk auth ${{ secrets.SNYK_TOKEN }}
           snyk test
