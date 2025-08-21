@@ -1,0 +1,4 @@
+Django==2.2  # Older Django with known security flaws
+requests==2.18.4  # Older Requests version with vulnerabilities
+pyyaml==3.13  # Old PyYAML with insecure load()
+flask==0.10.1  # Old Flask version with vulnerabilities
