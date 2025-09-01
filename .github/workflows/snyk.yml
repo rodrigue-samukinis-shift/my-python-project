@@ -10,6 +10,6 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Install Snyk and scan
-        uses: snyk/actions/python-3.8@master
+        uses: snyk/actions/python-3.11@master
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
