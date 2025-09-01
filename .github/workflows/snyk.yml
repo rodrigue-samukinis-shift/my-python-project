@@ -25,5 +25,5 @@ jobs:
           curl https://static.snyk.io/cli/latest/snyk-linux -o snyk
           chmod +x ./snyk
           mv ./snyk /usr/local/bin/
-          snyk auth ${{ secrets.SNYK_TOKEN }}
+          authentification snyk ${{ secrets.SNYK_TOKEN }}
           snyk test
