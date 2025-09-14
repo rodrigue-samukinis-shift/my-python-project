@@ -23,12 +23,10 @@ jobs:
         run: |
           snyk auth ${{ secrets.SNYK_TOKEN }}
           snyk code test
-      - name: Install dependencies
+      - name: Scan dependencies SCA
         run: |
           python -m venv venv
           source venv/bin/activate
           pip install -r requirements.txt
-      - name: Scan dependencies SCA
-        run: |
           snyk auth ${{ secrets.SNYK_TOKEN }}
           snyk test
