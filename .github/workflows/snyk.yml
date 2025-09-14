@@ -13,20 +13,21 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: '3.11'
-      - name: Scan source code SAST
-        run: |
-          curl https://static.snyk.io/cli/latest/snyk-linux -o snyk
-          chmod +x ./snyk
-          mv ./snyk /usr/local/bin/
-          snyk auth ${{ secrets.SNYK_TOKEN }}
-          snyk code test
-      - name: Scan dependencies SCA
+      - name: Install dependencies
         run: |
           python -m venv venv
           source venv/bin/activate
           pip install -r requirements.txt
+      - name: Install Snyk CLI
+        run: |
           curl https://static.snyk.io/cli/latest/snyk-linux -o snyk
           chmod +x ./snyk
           mv ./snyk /usr/local/bin/
+      - name: Scan source code SAST
+        run: |
+          snyk auth ${{ secrets.SNYK_TOKEN }}
+          snyk code test
+      - name: Scan dependencies SCA
+        run: |
           snyk auth ${{ secrets.SNYK_TOKEN }}
           snyk test
