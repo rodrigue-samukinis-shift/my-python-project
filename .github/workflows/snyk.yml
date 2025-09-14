@@ -23,6 +23,10 @@ jobs:
         run: |
           snyk auth ${{ secrets.SNYK_TOKEN }}
           snyk code test
+      - name: Scan iac IAC
+        run: |
+          snyk auth ${{ secrets.SNYK_TOKEN }}
+          snyk iac test
       - name: Scan dependencies SCA
         run: |
           python -m venv venv
@@ -30,8 +34,4 @@ jobs:
           pip install -r requirements.txt
           snyk auth ${{ secrets.SNYK_TOKEN }}
           snyk test
-          snyk iac test
-      - name: Scan iac IAC
-        run: |
-          snyk auth ${{ secrets.SNYK_TOKEN }}
           snyk iac test
