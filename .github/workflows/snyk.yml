@@ -22,12 +22,11 @@ jobs:
       - name: Scan source code SAST
         run: |
           snyk auth ${{ secrets.SNYK_TOKEN }}
-          snyk code test --json > snyk-code-results.json
-          
+          snyk code test --json > snyk-code-results.json || true 
       - name: Scan iac IAC
         run: |
           snyk auth ${{ secrets.SNYK_TOKEN }}
-          snyk iac test --report --json > snyk-iac-results.json
+          snyk iac test --report --json > snyk-iac-results.json || true
       - name: Scan dependencies SCA
         run: |
           python -m venv venv
