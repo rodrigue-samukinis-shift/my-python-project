@@ -19,7 +19,7 @@ spec:
             - containerPort: 80
           securityContext:
             runAsUser: 0       # ❌ Runs as root
-            privileged: false
+            privileged: true
           env:
             - name: APP_SECRET
               value: "supersecret"  # ❌ Secret exposed in plain text
