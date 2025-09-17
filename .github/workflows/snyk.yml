@@ -22,11 +22,12 @@ jobs:
       - name: Scan source code SAST
         run: |
           snyk auth ${{ secrets.SNYK_TOKEN }}
-          snyk code test
+          snyk code test --json > snyk-code-results.json
+          
       - name: Scan iac IAC
         run: |
           snyk auth ${{ secrets.SNYK_TOKEN }}
-          snyk iac test --severity-threshold=high --report
+          snyk iac test --report --json > snyk-iac-results.json
       - name: Scan dependencies SCA
         run: |
           python -m venv venv
@@ -34,4 +35,3 @@ jobs:
           pip install -r requirements.txt
           snyk auth ${{ secrets.SNYK_TOKEN }}
           snyk test
-          snyk iac test
