@@ -23,10 +23,24 @@ jobs:
         run: |
           snyk auth ${{ secrets.SNYK_TOKEN }}
           snyk code test --json > snyk-code-results.json || true 
+          snyk code test || true
       - name: Scan iac IAC
         run: |
           snyk auth ${{ secrets.SNYK_TOKEN }}
           snyk iac test --report --json > snyk-iac-results.json || true
+          snyk iac test || true
+          cat snyk-iac-results.json
+          high_count=$(jq '[.vulnerabilities[] | select(.severity == "high")] | length' snyk-results.json)
+          critical_count=$(jq '[.vulnerabilities[] | select(.severity == "critical")] | length' snyk-results.json)
+
+          # Affichage + contrôle de sortie
+          if [ "$high_count" -gt 0 ] || [ "$critical_count" -gt 0 ]; then
+            echo "❌ Échec : $critical_count vulnérabilités CRITICAL, $high_count HIGH"
+            exit 1
+          else
+            echo "✅ Aucun HIGH ou CRITICAL"
+            exit 0
+          fi
       - name: Scan dependencies SCA
         run: |
           python -m venv venv
