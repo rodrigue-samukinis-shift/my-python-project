@@ -29,8 +29,8 @@ jobs:
           snyk auth ${{ secrets.SNYK_TOKEN }}
           snyk iac test --report --json > snyk-iac-results.json || true
           snyk iac test || true
-          high_count=$(jq '[.vulnerabilities[] | select(.severity == "high")] | length' snyk-results.json)
-          critical_count=$(jq '[.vulnerabilities[] | select(.severity == "critical")] | length' snyk-results.json)
+          high_count=$(jq '[.vulnerabilities[] | select(.severity == "high")] | length' snyk-iac-results.json)
+          critical_count=$(jq '[.vulnerabilities[] | select(.severity == "critical")] | length' snyk-iac-results.json)
 
           # Affichage + contrôle de sortie
           if [ "$high_count" -gt 0 ] || [ "$critical_count" -gt 0 ]; then
