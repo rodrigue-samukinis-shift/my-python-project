@@ -24,6 +24,17 @@ jobs:
           snyk auth ${{ secrets.SNYK_TOKEN }}
           snyk code test --json > snyk-code-results.json || true 
           snyk code test || true
+          high_count=$(jq '[.[].infrastructureAsCodeIssues[]? | select(.severity == "high")] | length' snyk-iac-results.json)
+          critical_count=$(jq '[.[].infrastructureAsCodeIssues[]? | select(.severity == "critical")] | length' snyk-iac-results.json)
+
+          # Affichage + contrôle de sortie
+          if [ "$high_count" -gt 0 ] || [ "$critical_count" -gt 0 ]; then
+            echo "❌ Échec : $critical_count vulnérabilités CRITICAL, $high_count HIGH"
+            exit 1
+          else
+            echo "✅ Aucun HIGH ou CRITICAL"
+            exit 0
+          fi
       - name: Scan iac IAC
         run: |
           snyk auth ${{ secrets.SNYK_TOKEN }}
@@ -47,3 +58,14 @@ jobs:
           pip install -r requirements.txt
           snyk auth ${{ secrets.SNYK_TOKEN }}
           snyk test
+          high_count=$(jq '[.[].infrastructureAsCodeIssues[]? | select(.severity == "high")] | length' snyk-iac-results.json)
+          critical_count=$(jq '[.[].infrastructureAsCodeIssues[]? | select(.severity == "critical")] | length' snyk-iac-results.json)
+
+          # Affichage + contrôle de sortie
+          if [ "$high_count" -gt 0 ] || [ "$critical_count" -gt 0 ]; then
+            echo "❌ Échec : $critical_count vulnérabilités CRITICAL, $high_count HIGH"
+            exit 1
+          else
+            echo "✅ Aucun HIGH ou CRITICAL"
+            exit 0
+          fi
