@@ -24,8 +24,8 @@ jobs:
           snyk auth ${{ secrets.SNYK_TOKEN }}
           snyk code test --json > snyk-code-results.json || true 
           snyk code test || true
-          high_count=$(jq '[.[].infrastructureAsCodeIssues[]? | select(.severity == "high")] | length' snyk-iac-results.json)
-          critical_count=$(jq '[.[].infrastructureAsCodeIssues[]? | select(.severity == "critical")] | length' snyk-iac-results.json)
+          high_count=$(jq '[.[].infrastructureAsCodeIssues[]? | select(.severity == "high")] | length' snyk-code-results.json)
+          critical_count=$(jq '[.[].infrastructureAsCodeIssues[]? | select(.severity == "critical")] | length' snyk-code-results.json)
 
           # Affichage + contrôle de sortie
           if [ "$high_count" -gt 0 ] || [ "$critical_count" -gt 0 ]; then
@@ -57,9 +57,10 @@ jobs:
           source venv/bin/activate
           pip install -r requirements.txt
           snyk auth ${{ secrets.SNYK_TOKEN }}
-          snyk test
-          high_count=$(jq '[.[].infrastructureAsCodeIssues[]? | select(.severity == "high")] | length' snyk-iac-results.json)
-          critical_count=$(jq '[.[].infrastructureAsCodeIssues[]? | select(.severity == "critical")] | length' snyk-iac-results.json)
+          snyk test --json > snyk-sca-results.json || true
+          snyk test || true
+          high_count=$(jq '[.[].infrastructureAsCodeIssues[]? | select(.severity == "high")] | length' snyk-sca-results.json)
+          critical_count=$(jq '[.[].infrastructureAsCodeIssues[]? | select(.severity == "critical")] | length' snyk-sca-results.json)
 
           # Affichage + contrôle de sortie
           if [ "$high_count" -gt 0 ] || [ "$critical_count" -gt 0 ]; then
