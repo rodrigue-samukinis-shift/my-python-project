@@ -25,8 +25,7 @@ jobs:
           snyk code test --json > snyk-code-results.json || true 
           snyk code test || true
           cat snyk-code-results.json
-          high_count=$(jq '[.[].infrastructureAsCodeIssues[]? | select(.severity == "high")] | length' snyk-code-results.json)
-          critical_count=$(jq '[.[].infrastructureAsCodeIssues[]? | select(.severity == "critical")] | length' snyk-code-results.json)
+          high_count=$(jq '.runs[].tool.driver.rules[] | select(.properties.precision == "very-high") | .id' snyk-code-results.json)
 
           # Affichage + contrôle de sortie
           if [ "$high_count" -gt 0 ] || [ "$critical_count" -gt 0 ]; then
