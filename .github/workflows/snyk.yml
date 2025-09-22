@@ -22,8 +22,7 @@ jobs:
       - name: Scan source code SAST
         run: |
           snyk auth ${{ secrets.SNYK_TOKEN }}
-          snyk code test --json-file-output=snyk-code-results.json || true 
-          snyk code test || true
+          snyk code test --json-file-output=snyk-code-results.json || true
           cat snyk-code-results.json
           high_count=$(jq '.runs[].tool.driver.rules[] | select(.properties.precision == "very-high") | .id' snyk-code-results.json)
 
