@@ -58,8 +58,9 @@ jobs:
           snyk auth ${{ secrets.SNYK_TOKEN }}
           snyk test --json > snyk-sca-results.json || true
           snyk test || true
-          high_count=$(jq '[.[].infrastructureAsCodeIssues[]? | select(.severity == "high")] | length' snyk-sca-results.json)
-          critical_count=$(jq '[.[].infrastructureAsCodeIssues[]? | select(.severity == "critical")] | length' snyk-sca-results.json)
+          cat snyk-sca-results.json
+          # high_count=$(jq '[.[].infrastructureAsCodeIssues[]? | select(.severity == "high")] | length' snyk-sca-results.json)
+          # critical_count=$(jq '[.[].infrastructureAsCodeIssues[]? | select(.severity == "critical")] | length' snyk-sca-results.json)
 
           # Affichage + contrôle de sortie
           if [ "$high_count" -gt 0 ] || [ "$critical_count" -gt 0 ]; then
