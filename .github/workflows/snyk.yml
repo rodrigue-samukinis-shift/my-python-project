@@ -24,7 +24,7 @@ jobs:
           snyk auth ${{ secrets.SNYK_TOKEN }}
           snyk code test > snyk-code-results || true
           snyk code test || true
-          high_count=$(grep -c '[HIGH] ' snyk-code-results)
+          high_count=$(grep -c '[HIGH] ' snyk-code-results || 0)
           # Affichage + contrôle de sortie
           if [ "$high_count" -gt 0 ]; then
             echo "❌ Échec : $high_count HIGH"
