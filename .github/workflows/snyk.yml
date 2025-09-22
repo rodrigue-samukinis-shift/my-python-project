@@ -23,7 +23,6 @@ jobs:
         run: |
           snyk auth ${{ secrets.SNYK_TOKEN }}
           snyk code test --json-file-output=snyk-code-results.json || true
-          cat snyk-code-results.json
           high_count=$(jq '.runs[].tool.driver.rules[] | select(.properties.precision == "very-high") | .id' snyk-code-results.json)
 
           # Affichage + contrôle de sortie
@@ -34,6 +33,10 @@ jobs:
             echo "✅ Aucun HIGH ou CRITICAL"
             exit 0
           fi
+      - uses: actions/upload-artifact@v4
+        with:
+            name: my-artifact
+            path: snyk-code-results.json
       - name: Scan iac IAC
         run: |
           snyk auth ${{ secrets.SNYK_TOKEN }}
