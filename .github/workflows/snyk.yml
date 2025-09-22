@@ -23,10 +23,16 @@ jobs:
         run: |
           snyk auth ${{ secrets.SNYK_TOKEN }}
           snyk code test > snyk-code-results || true
-      - uses: actions/upload-artifact@v4
-        with:
-          name: my-artifact
-          path: snyk-code-results
+          snyk code test || true
+          high_count=$(grep -c '^✗ \[HIGH\] ' snyk-code-results)
+          # Affichage + contrôle de sortie
+          if [ "$high_count" -gt 0 ]; then
+            echo "❌ Échec : $high_count HIGH"
+            exit 1
+          else
+            echo "✅ Aucun HIGH ou CRITICAL"
+            exit 0
+          fi
 
       - name: Scan iac IAC
         run: |
