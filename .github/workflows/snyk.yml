@@ -58,8 +58,8 @@ jobs:
           snyk auth ${{ secrets.SNYK_TOKEN }}
           snyk test > snyk-sca-results || true
           snyk test || true
-          high_count=$(grep -c '[High Severity] ' snyk-sca-results || true)
-          critical_count=$(grep -c '[Critical Severity] ' snyk-sca-results || true)
+          high_count=$(grep -c "\[High Severity\]" snyk-sca-results || true)
+          critical_count=$(grep -c "\[Critical Severity\]" snyk-sca-results || true)
 
           # Affichage + contrôle de sortie
           if [ "$high_count" -gt 0 ] || [ "$critical_count" -gt 0 ]; then
