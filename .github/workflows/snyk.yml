@@ -56,11 +56,10 @@ jobs:
           source venv/bin/activate
           pip install -r requirements.txt
           snyk auth ${{ secrets.SNYK_TOKEN }}
-          snyk test --json > snyk-sca-results.json || true
+          snyk test > snyk-sca-results || true
           snyk test || true
-          cat snyk-sca-results.json
-          # high_count=$(jq '[.[].infrastructureAsCodeIssues[]? | select(.severity == "high")] | length' snyk-sca-results.json)
-          # critical_count=$(jq '[.[].infrastructureAsCodeIssues[]? | select(.severity == "critical")] | length' snyk-sca-results.json)
+          high_count=$(grep -c '[High Severity] ' snyk-sca-results || true)
+          critical_count=$(grep -c '[Critical Severity] ' snyk-sca-results || true)
 
           # Affichage + contrôle de sortie
           if [ "$high_count" -gt 0 ] || [ "$critical_count" -gt 0 ]; then
