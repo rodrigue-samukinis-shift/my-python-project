@@ -69,7 +69,10 @@ jobs:
             echo "✅ Aucun HIGH ou CRITICAL"
             exit 0
           fi
-      - uses: actions/upload-artifact@v4
-        with:
-          name: my-artifact
-          path: snyk-sca-results
+      - name: Scan container image
+        run: |
+          snyk auth ${{ secrets.SNYK_TOKEN }}
+          snyk container test python:3.6-slim > snyk-sca-results || true
+          snyk container test python:3.6-slim || true
+          # high_count=$(grep -c "\[High Severity\]" snyk-sca-results || true)
+          # critical_count=$(grep -c "\[Critical Severity\]" snyk-sca-results || true)
