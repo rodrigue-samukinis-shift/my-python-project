@@ -74,6 +74,15 @@ jobs:
           snyk auth ${{ secrets.SNYK_TOKEN }}
           snyk container test python:3.6-slim > snyk-container-results || true
           snyk container test python:3.6-slim || true
-          high_count=$(grep -c "\High severity\" snyk-container-results || true)
-          critical_count=$(grep -c "\Critical severity\" snyk-container-results || true)
+          high_count=$(grep -c "High" snyk-container-results || true)
+          critical_count=$(grep -c "Critical" snyk-container-results || true)
+          
+          # Affichage + contrôle de sortie
+          if [ "$high_count" -gt 0 ] || [ "$critical_count" -gt 0 ]; then
+              echo "❌ Échec : $critical_count vulnérabilités CRITICAL, $high_count HIGH"
+              exit 1
+          else
+              echo "✅ Aucun HIGH ou CRITICAL"
+              exit 0
+          fi
           
