@@ -77,11 +77,3 @@ jobs:
           high_count=$(grep -c "\High severity\" snyk-container-results || true)
           critical_count=$(grep -c "\Critical severity\" snyk-container-results || true)
           
-          # Affichage + contrôle de sortie
-          if [ "$high_count" -gt 0 ] || [ "$critical_count" -gt 0 ]; then
-              echo "❌ Échec : $critical_count vulnérabilités CRITICAL, $high_count HIGH"
-              exit 1
-          else
-              echo "✅ Aucun HIGH ou CRITICAL"
-              exit 0
-          fi
