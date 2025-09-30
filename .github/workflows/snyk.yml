@@ -72,8 +72,8 @@ jobs:
       - name: Scan container image
         run: |
           snyk auth ${{ secrets.SNYK_TOKEN }}
-          snyk container test python:3.12-slim > snyk-container-results || true
-          snyk container test python:3.12-slim || true
+          snyk container test python:3.6-slim > snyk-container-results || true
+          snyk container test python:3.6-slim || true
           high_count=$(grep -c "High severity" snyk-container-results || true)
           critical_count=$(grep -c "Critical severity" snyk-container-results || true)
           
