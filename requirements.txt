@@ -1,3 +1,4 @@
 Django==5.1.12  # Older Django with known security flaws
 requests==2.32.4  # Older Requests version with vulnerabilities
 flask==2.2.5  # Old Flask version with vulnerabilities
+zipp>=3.19.1 # not directly required, pinned by Snyk to avoid a vulnerability
